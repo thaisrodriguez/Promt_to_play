@@ -44,9 +44,14 @@ export class Forest {
 
   private drawGround(scene: Phaser.Scene, seed: number): void {
     const { x, y, width, height } = this.bounds;
-    scene.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, COLORS.outside).setDepth(DEPTH.background);
+    if (scene.textures.exists(TextureKeys.background)) {
+      scene.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, TextureKeys.background).setDisplaySize(GAME_WIDTH, GAME_HEIGHT).setDepth(DEPTH.background - 1);
+      scene.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, COLORS.outside, 0.45).setDepth(DEPTH.background);
+    } else {
+      scene.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, COLORS.outside).setDepth(DEPTH.background);
+    }
     scene.add
-      .rectangle(x, y, width, height, COLORS.ground)
+      .rectangle(x, y, width, height, COLORS.ground, 0.88)
       .setOrigin(0)
       .setStrokeStyle(6, COLORS.border)
       .setDepth(DEPTH.background);
