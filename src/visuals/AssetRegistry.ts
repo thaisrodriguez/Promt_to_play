@@ -17,6 +17,7 @@ import flowerAmarilloUrl from '../../assets/sprites/game/flower-amarillo.png?url
 import flowerBlancaUrl from '../../assets/sprites/game/flower-blanca.png?url';
 import flowerGrisUrl from '../../assets/sprites/game/flower-gris.png?url';
 import treeUrl from '../../assets/sprites/game/tree.png?url';
+import tree2Url from '../../assets/sprites/game/tree2.png?url';
 import rockUrl from '../../assets/sprites/game/rock.png?url';
 import sparkUrl from '../../assets/sprites/game/spark.png?url';
 import spellRingUrl from '../../assets/sprites/game/spell-ring.png?url';
@@ -29,6 +30,7 @@ export const TextureKeys = {
   flowerNeutral: (tone: NeutralTone) => `flower-${tone}`,
   flowerPainted: (color: FairyColorName) => `flower-${color}`,
   tree: 'tree',
+  tree2: 'tree2',
   rock: 'rock',
   spark: 'spark',
   spellRing: 'spell-ring',
@@ -38,7 +40,7 @@ export const TextureKeys = {
 /** Medidas de referencia de las texturas generadas, para escalar al tamaño deseado. */
 export const TextureSizes = {
   /** Radio del cuerpo del árbol dentro de la textura y tamaño total (incluye la sombra). */
-  tree: { bodyRadius: 46, size: 128 },
+  tree: { bodyRadius: 20, size: 45 },
   rock: { bodyRadius: 52, size: 128 },
   flower: { size: 42 },
   fairy: { width: 470, height: 480 },
@@ -57,6 +59,7 @@ export const SPRITE_MANIFEST: Record<string, string> = {
   [TextureKeys.flowerNeutral('blanca')]: flowerBlancaUrl,
   [TextureKeys.flowerNeutral('gris')]: flowerGrisUrl,
   [TextureKeys.tree]: treeUrl,
+  [TextureKeys.tree2]: tree2Url,
   [TextureKeys.rock]: rockUrl,
   [TextureKeys.spark]: sparkUrl,
   [TextureKeys.spellRing]: spellRingUrl,

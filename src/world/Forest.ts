@@ -69,8 +69,9 @@ export class Forest {
 
   private drawTree(scene: Phaser.Scene, o: Obstacle): void {
     const { bodyRadius, size } = TextureSizes.tree;
+    const rng = createRng(Math.round(o.x * 13 + o.y));
     scene.add
-      .image(o.x, o.y, TextureKeys.tree)
+      .image(o.x, o.y, rng() < 0.5 ? TextureKeys.tree : TextureKeys.tree2)
       .setOrigin(bodyRadius / size)
       .setScale(o.radius / bodyRadius)
       .setDepth(DEPTH.obstacles);
