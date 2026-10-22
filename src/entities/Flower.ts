@@ -1,18 +1,19 @@
 import Phaser from 'phaser';
-import { FAIRY_COLORS, FLOWER, FLOWER_NEUTRAL_COLORS, type FairyColorName } from '../shared/config';
+import { FAIRY_COLORS, FLOWER, type FairyColorName } from '../shared/config';
+
 import type { FlowerState, IFlower, PlayerId, Point } from '../shared/types';
 import { LAYER } from '../systems/layers';
+import { TextureKeys } from '../visuals/AssetRegistry';
 
-const PETALS = 6;
-
-/** J3: flor geométrica. Nace blanca o gris y florece del color del hada que la encanta. */
+/** J3: flor con sprite. Nace blanca o gris y florece del color del hada que la encanta. */
 export class Flower implements IFlower {
   readonly id: number;
   readonly position: Point;
   private current: FlowerState;
   private readonly scene: Phaser.Scene;
   private readonly root: Phaser.GameObjects.Container;
-  private readonly bloom: Phaser.GameObjects.Graphics;
+  private readonly bloom: Phaser.GameObjects.Image;
+  private bloomScale = 1;
   private readonly shield: Phaser.GameObjects.Arc;
   private shieldTween?: Phaser.Tweens.Tween;
   private shieldTimer?: Phaser.Time.TimerEvent;
@@ -23,16 +24,11 @@ export class Flower implements IFlower {
     this.position = { ...position };
     this.current = { kind: 'neutral', tone };
 
-    const stem = scene.add.graphics();
-    stem.fillStyle(0x2e7d32, 1);
-    stem.fillRect(-1.5, 0, 3, FLOWER.radius + 4);
-    stem.fillEllipse(5, FLOWER.radius - 1, 9, 4);
-    stem.fillEllipse(-5, FLOWER.radius + 2, 9, 4);
-
     this.shield = scene.add.circle(0, 0, FLOWER.radius + 6).setStrokeStyle(2, 0xffffff, 0.9).setVisible(false);
-    this.bloom = scene.add.graphics();
-    this.root = scene.add.container(position.x, position.y, [stem, this.shield, this.bloom]).setDepth(LAYER.flowers);
-    this.draw();
+    this.bloom = scene.add.image(0, -4, TextureKeys.flowerNeutral(tone));
+    this.bloomScale = (FLOWER.radius * 3) / this.bloom.displayHeight;
+    this.bloom.setScale(this.bloomScale);
+    this.root = scene.add.container(position.x, position.y, [this.shield, this.bloom]).setDepth(LAYER.flowers);
 
     // Balanceo suave para que el bosque parezca vivo.
     scene.tweens.add({
@@ -53,10 +49,10 @@ export class Flower implements IFlower {
   /** Pinta la flor con el color del hada. Las reglas (quién puede pintar) están en systems/rules. */
   paint(owner: PlayerId, color: FairyColorName, now: number): void {
     this.current = { kind: 'painted', owner, color, paintedAt: now };
-    this.draw();
+    this.bloom.setTexture(TextureKeys.flowerPainted(color));
 
-    this.bloom.setScale(0.2);
-    this.scene.tweens.add({ targets: this.bloom, scale: 1, duration: 450, ease: 'Back.easeOut' });
+    this.bloom.setScale(this.bloomScale * 0.2);
+    this.scene.tweens.add({ targets: this.bloom, scale: this.bloomScale, duration: 450, ease: 'Back.easeOut' });
     this.scene.tweens.add({ targets: this.root, y: this.position.y - 6, duration: 120, yoyo: true, ease: 'Quad.easeOut' });
 
     this.showShield(FAIRY_COLORS[color]);
@@ -86,35 +82,4 @@ export class Flower implements IFlower {
     });
   }
 
-  private draw(): void {
-    const g = this.bloom;
-    const r = FLOWER.radius;
-    const painted = this.current.kind === 'painted';
-    const petalColor = painted
-      ? FAIRY_COLORS[(this.current as Extract<FlowerState, { kind: 'painted' }>).color]
-      : FLOWER_NEUTRAL_COLORS[(this.current as Extract<FlowerState, { kind: 'neutral' }>).tone];
-
-    g.clear();
-    if (painted) {
-      g.fillStyle(petalColor, 0.25);
-      g.fillCircle(0, 0, r * 1.6);
-    }
-    g.fillStyle(petalColor, 1);
-    for (let i = 0; i < PETALS; i++) {
-      const a = (i / PETALS) * Math.PI * 2;
-      g.fillCircle(Math.cos(a) * r * 0.6, Math.sin(a) * r * 0.6, r * 0.5);
-    }
-    g.fillStyle(painted ? 0xffffff : 0xffd54f, 1);
-    g.fillCircle(0, 0, r * 0.38);
-    if (painted) {
-      // Carita feliz: las flores encantadas sonríen.
-      g.fillStyle(0x3b2a20, 1);
-      g.fillCircle(-1.8, -1, 0.9);
-      g.fillCircle(1.8, -1, 0.9);
-      g.lineStyle(1, 0x3b2a20, 1);
-      g.beginPath();
-      g.arc(0, 0.6, 1.8, 0.2, Math.PI - 0.2, false);
-      g.strokePath();
-    }
-  }
 }
