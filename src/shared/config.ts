@@ -7,7 +7,7 @@ export const GAME_HEIGHT = 720;
 export const FAIRY_COLORS = {
   rosa: 0xff5fa2,
   azul: 0x4da6ff,
-  verde: 0x5ce65c,
+  morado: 0xa55eea,
   amarillo: 0xffd23f,
 } as const;
 

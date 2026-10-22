@@ -5,7 +5,7 @@ import { rankPlayers } from './ranking';
 const players: PlayerConfig[] = [
   { id: 0, color: 'rosa', keysIndex: 0 },
   { id: 1, color: 'azul', keysIndex: 1 },
-  { id: 2, color: 'verde', keysIndex: 2 },
+  { id: 2, color: 'morado', keysIndex: 2 },
 ];
 
 describe('rankPlayers', () => {
