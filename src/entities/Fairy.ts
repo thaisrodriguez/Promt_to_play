@@ -3,6 +3,7 @@ import { FAIRY, FAIRY_COLORS, GAME_WIDTH, PLAYER_KEYS, type FairyColorName } fro
 import type { IFairy, PlayerConfig, PlayerId, Point } from '../shared/types';
 import { normalize } from '../systems/geometry';
 import { FUNNY_FONT, LAYER } from '../systems/layers';
+import { TextureKeys } from '../visuals/AssetRegistry';
 
 type ControlName = keyof (typeof PLAYER_KEYS)[number];
 type Keys = Record<ControlName, Phaser.Input.Keyboard.Key>;
@@ -55,7 +56,6 @@ export class Fairy implements IFairy {
   private readonly root: Phaser.GameObjects.Container;
   private readonly bodyParts: Phaser.GameObjects.Container;
   private readonly aura: Phaser.GameObjects.Arc;
-  private readonly eyes: Phaser.GameObjects.Graphics;
   private readonly tint: number;
   private bubble?: Phaser.GameObjects.Text;
   private moving = false;
@@ -75,58 +75,14 @@ export class Fairy implements IFairy {
     const r = this.radius;
     this.aura = scene.add.circle(0, 0, r * 1.9, this.tint, 0.18);
 
-    const wings = [-1, 1].map((side) => {
-      const wing = scene.add.graphics();
-      wing.fillStyle(0xffffff, 0.75);
-      wing.fillTriangle(0, 0, side * r * 1.7, -r * 1.3, side * r * 1.5, r * 0.2);
-      wing.fillStyle(this.tint, 0.45);
-      wing.fillTriangle(0, r * 0.1, side * r * 1.3, r * 0.2, side * r * 1.0, r * 1.0);
-      wing.setPosition(side * r * 0.3, -r * 0.1);
-      scene.tweens.add({
-        targets: wing,
-        scaleX: 0.35,
-        duration: 110,
-        yoyo: true,
-        repeat: -1,
-        ease: 'Sine.easeInOut',
-        delay: Math.random() * 100,
-      });
-      return wing;
-    });
+    const sprite = scene.add.image(0, 0, TextureKeys.fairy(player.color));
+    sprite.setScale(96 / sprite.height);
 
-    const body = scene.add.circle(0, 0, r, this.tint).setStrokeStyle(2, 0xffffff, 0.8);
-    const shine = scene.add.circle(-r * 0.35, -r * 0.4, r * 0.25, 0xffffff, 0.6);
-
-    const face = scene.add.graphics();
-    face.fillStyle(0xff8fab, 0.7);
-    face.fillCircle(-r * 0.55, r * 0.2, r * 0.18);
-    face.fillCircle(r * 0.55, r * 0.2, r * 0.18);
-    face.lineStyle(2, 0x2b1b2e, 1);
-    face.beginPath();
-    face.arc(0, r * 0.15, r * 0.32, 0.25, Math.PI - 0.25, false);
-    face.strokePath();
-
-    this.eyes = scene.add.graphics();
-    this.eyes.fillStyle(0x2b1b2e, 1);
-    this.eyes.fillCircle(-r * 0.3, -r * 0.15, r * 0.14);
-    this.eyes.fillCircle(r * 0.3, -r * 0.15, r * 0.14);
-    this.eyes.fillStyle(0xffffff, 1);
-    this.eyes.fillCircle(-r * 0.26, -r * 0.2, r * 0.05);
-    this.eyes.fillCircle(r * 0.34, -r * 0.2, r * 0.05);
-
-    // Antena con estrellita, porque toda hada que se precie lleva una.
-    const antenna = scene.add.graphics();
-    antenna.lineStyle(2, 0xffffff, 0.9);
-    antenna.lineBetween(0, -r, r * 0.25, -r * 1.55);
-    antenna.fillStyle(0xfff59d, 1);
-    antenna.fillPoints(starPoints(r * 0.25, -r * 1.65, r * 0.32, r * 0.14), true);
-
-    this.bodyParts = scene.add.container(0, 0, [...wings, body, shine, face, this.eyes, antenna]);
+    this.bodyParts = scene.add.container(0, 0, [sprite]);
     this.root = scene.add.container(start.x, start.y, [this.aura, this.bodyParts]).setDepth(LAYER.fairies);
 
     scene.tweens.add({ targets: this.bodyParts, y: -4, duration: 600, yoyo: true, repeat: -1, ease: 'Sine.easeInOut' });
     scene.tweens.add({ targets: this.aura, scale: 1.15, alpha: 0.3, duration: 900, yoyo: true, repeat: -1 });
-    scene.time.addEvent({ delay: 2600 + Math.random() * 1500, loop: true, callback: () => this.blink() });
   }
 
   get position(): Point {
@@ -229,10 +185,6 @@ export class Fairy implements IFairy {
   destroy(): void {
     this.bubble?.destroy();
     this.root.destroy();
-  }
-
-  private blink(): void {
-    this.scene.tweens.add({ targets: this.eyes, scaleY: 0.1, duration: 70, yoyo: true });
   }
 
   private sparkle(): void {
