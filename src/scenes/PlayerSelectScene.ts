@@ -110,7 +110,8 @@ export class PlayerSelectScene extends Phaser.Scene {
     const panel = this.add.rectangle(x, y, PANEL_WIDTH, PANEL_HEIGHT, 0x173b24).setStrokeStyle(3, 0x2e6b41);
     const label = cpu ? `CPU ${index + 1}` : `Jugador ${index + 1}`;
     this.add.text(x, y - 120, label, { fontSize: '26px', color: '#ffffff' }).setOrigin(0.5);
-    const fairy = this.add.image(x, y - 30, TextureKeys.fairy(COLOR_NAMES[index])).setScale(2.2);
+    const fairy = this.add.image(x, y - 30, TextureKeys.fairy(COLOR_NAMES[index]));
+    fairy.setScale(120 / fairy.height); // ~120 px de alto sea cual sea el sprite
     const colorText = this.add.text(x, y + 45, '', { fontSize: '24px', color: '#ffffff' }).setOrigin(0.5);
     const status = this.add.text(x, y + 122, '', { fontSize: '20px', color: '#ffd23f' }).setOrigin(0.5);
     if (cpu) {

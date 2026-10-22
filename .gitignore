@@ -3,3 +3,9 @@ dist/
 .DS_Store
 *.log
 .vite/
+
+# Packs de assets originales: solo se commitean los elegidos en sprites/game/
+assets/sprites/backgrounds/
+assets/sprites/characters/
+assets/sprites/objects/
+assets/sprites/effects/

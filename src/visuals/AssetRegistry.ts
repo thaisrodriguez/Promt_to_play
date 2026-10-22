@@ -6,6 +6,21 @@
 // El resto del código no cambia: todos usan TextureKeys.
 import Phaser from 'phaser';
 import { FAIRY_COLORS, FLOWER_NEUTRAL_COLORS, type FairyColorName } from '../shared/config';
+import fairyRosaUrl from '../../assets/sprites/game/fairy-rosa.png?url';
+import fairyAzulUrl from '../../assets/sprites/game/fairy-azul.png?url';
+import fairyVerdeUrl from '../../assets/sprites/game/fairy-verde.png?url';
+import fairyAmarilloUrl from '../../assets/sprites/game/fairy-amarillo.png?url';
+import flowerRosaUrl from '../../assets/sprites/game/flower-rosa.png?url';
+import flowerAzulUrl from '../../assets/sprites/game/flower-azul.png?url';
+import flowerVerdeUrl from '../../assets/sprites/game/flower-verde.png?url';
+import flowerAmarilloUrl from '../../assets/sprites/game/flower-amarillo.png?url';
+import flowerBlancaUrl from '../../assets/sprites/game/flower-blanca.png?url';
+import flowerGrisUrl from '../../assets/sprites/game/flower-gris.png?url';
+import treeUrl from '../../assets/sprites/game/tree.png?url';
+import rockUrl from '../../assets/sprites/game/rock.png?url';
+import sparkUrl from '../../assets/sprites/game/spark.png?url';
+import spellRingUrl from '../../assets/sprites/game/spell-ring.png?url';
+import backgroundUrl from '../../assets/sprites/game/background.png?url';
 
 type NeutralTone = keyof typeof FLOWER_NEUTRAL_COLORS;
 
@@ -17,21 +32,35 @@ export const TextureKeys = {
   rock: 'rock',
   spark: 'spark',
   spellRing: 'spell-ring',
+  background: 'background',
 } as const;
 
 /** Medidas de referencia de las texturas generadas, para escalar al tamaño deseado. */
 export const TextureSizes = {
   /** Radio del cuerpo del árbol dentro de la textura y tamaño total (incluye la sombra). */
-  tree: { bodyRadius: 40, size: 90 },
-  rock: { bodyRadius: 20, size: 48 },
-  flower: { size: 32 },
-  fairy: { width: 56, height: 44 },
+  tree: { bodyRadius: 46, size: 128 },
+  rock: { bodyRadius: 52, size: 128 },
+  flower: { size: 42 },
+  fairy: { width: 470, height: 480 },
 } as const;
 
-/** Sprites reales: clave de textura → ruta. Vacío mientras usamos formas geométricas. */
+/** Sprites reales: clave de textura → ruta (resuelta por Vite, funciona en dev y en build). */
 export const SPRITE_MANIFEST: Record<string, string> = {
-  // [TextureKeys.tree]: 'assets/sprites/tree.png',
-  // [TextureKeys.fairy('rosa')]: 'assets/sprites/fairy-rosa.png',
+  [TextureKeys.fairy('rosa')]: fairyRosaUrl,
+  [TextureKeys.fairy('azul')]: fairyAzulUrl,
+  [TextureKeys.fairy('verde')]: fairyVerdeUrl,
+  [TextureKeys.fairy('amarillo')]: fairyAmarilloUrl,
+  [TextureKeys.flowerPainted('rosa')]: flowerRosaUrl,
+  [TextureKeys.flowerPainted('azul')]: flowerAzulUrl,
+  [TextureKeys.flowerPainted('verde')]: flowerVerdeUrl,
+  [TextureKeys.flowerPainted('amarillo')]: flowerAmarilloUrl,
+  [TextureKeys.flowerNeutral('blanca')]: flowerBlancaUrl,
+  [TextureKeys.flowerNeutral('gris')]: flowerGrisUrl,
+  [TextureKeys.tree]: treeUrl,
+  [TextureKeys.rock]: rockUrl,
+  [TextureKeys.spark]: sparkUrl,
+  [TextureKeys.spellRing]: spellRingUrl,
+  [TextureKeys.background]: backgroundUrl,
 };
 
 /** Llamar en `preload()` de BootScene. */
