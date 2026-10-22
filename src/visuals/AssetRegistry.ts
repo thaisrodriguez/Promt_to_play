@@ -8,11 +8,11 @@ import Phaser from 'phaser';
 import { FAIRY_COLORS, FLOWER_NEUTRAL_COLORS, type FairyColorName } from '../shared/config';
 import fairyRosaUrl from '../../assets/sprites/game/fairy-rosa.png?url';
 import fairyAzulUrl from '../../assets/sprites/game/fairy-azul.png?url';
-import fairyVerdeUrl from '../../assets/sprites/game/fairy-verde.png?url';
+import fairyMoradoUrl from '../../assets/sprites/game/fairy-morado.png?url';
 import fairyAmarilloUrl from '../../assets/sprites/game/fairy-amarillo.png?url';
 import flowerRosaUrl from '../../assets/sprites/game/flower-rosa.png?url';
 import flowerAzulUrl from '../../assets/sprites/game/flower-azul.png?url';
-import flowerVerdeUrl from '../../assets/sprites/game/flower-verde.png?url';
+import flowerMoradoUrl from '../../assets/sprites/game/flower-morado.png?url';
 import flowerAmarilloUrl from '../../assets/sprites/game/flower-amarillo.png?url';
 import flowerBlancaUrl from '../../assets/sprites/game/flower-blanca.png?url';
 import flowerGrisUrl from '../../assets/sprites/game/flower-gris.png?url';
@@ -48,11 +48,11 @@ export const TextureSizes = {
 export const SPRITE_MANIFEST: Record<string, string> = {
   [TextureKeys.fairy('rosa')]: fairyRosaUrl,
   [TextureKeys.fairy('azul')]: fairyAzulUrl,
-  [TextureKeys.fairy('verde')]: fairyVerdeUrl,
+  [TextureKeys.fairy('morado')]: fairyMoradoUrl,
   [TextureKeys.fairy('amarillo')]: fairyAmarilloUrl,
   [TextureKeys.flowerPainted('rosa')]: flowerRosaUrl,
   [TextureKeys.flowerPainted('azul')]: flowerAzulUrl,
-  [TextureKeys.flowerPainted('verde')]: flowerVerdeUrl,
+  [TextureKeys.flowerPainted('morado')]: flowerMoradoUrl,
   [TextureKeys.flowerPainted('amarillo')]: flowerAmarilloUrl,
   [TextureKeys.flowerNeutral('blanca')]: flowerBlancaUrl,
   [TextureKeys.flowerNeutral('gris')]: flowerGrisUrl,
